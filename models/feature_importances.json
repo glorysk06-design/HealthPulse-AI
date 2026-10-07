@@ -1,0 +1,37 @@
+{
+  "note": "Relative Random Forest feature importance values; these do not show that a feature causes a prediction.",
+  "features": [
+    {
+      "name": "Glucose",
+      "importance": 0.25886401925372515
+    },
+    {
+      "name": "BMI",
+      "importance": 0.16998350195960615
+    },
+    {
+      "name": "Age",
+      "importance": 0.14093146071108156
+    },
+    {
+      "name": "DiabetesPedigreeFunction",
+      "importance": 0.12376760020344678
+    },
+    {
+      "name": "BloodPressure",
+      "importance": 0.08813383878246121
+    },
+    {
+      "name": "Pregnancies",
+      "importance": 0.07655143232512385
+    },
+    {
+      "name": "Insulin",
+      "importance": 0.0761218987972595
+    },
+    {
+      "name": "SkinThickness",
+      "importance": 0.06564624796729589
+    }
+  ]
+}

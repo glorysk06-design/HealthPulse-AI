@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f8fb">
+    <title>Assessment History | HealthPulse AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="{{ url_for('home') }}" aria-label="HealthPulse AI dashboard">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span class="brand-copy">
+                    <span class="brand-name">HealthPulse <strong>AI</strong></span>
+                    <span class="brand-subtitle">Intelligent Health Risk &amp; Report Assistant</span>
+                </span>
+            </a>
+            <div class="topbar-meta history-meta">
+                <p class="welcome-name">Welcome, <strong>{{ user_name }}</strong></p>
+                <nav class="user-actions" aria-label="Account navigation">
+                    <a class="nav-button nav-primary" href="{{ url_for('home') }}#form-heading">New Assessment</a>
+                    <form method="post" action="{{ url_for('logout') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="nav-button nav-logout" type="submit">Logout</button>
+                    </form>
+                </nav>
+            </div>
+        </header>
+
+        <section class="history-page" aria-labelledby="history-heading">
+            <div class="history-heading">
+                <div>
+                    <p class="eyebrow"><span class="eyebrow-line"></span> YOUR PRIVATE RECORDS</p>
+                    <h1 id="history-heading">Assessment History</h1>
+                    <p>Review your previous educational health assessments, {{ user_name }}.</p>
+                </div>
+                <a class="nav-button nav-primary history-new" href="{{ url_for('home') }}#form-heading">+ New Assessment</a>
+            </div>
+
+            {% if assessments %}
+            <div class="history-list">
+                {% for assessment in assessments %}
+                <article class="card history-card">
+                    <div class="history-card-main">
+                        <div class="history-risk-icon {% if assessment.prediction == 1 %}history-higher{% else %}history-lower{% endif %}" aria-hidden="true">
+                            {% if assessment.prediction == 1 %}!{% else %}✓{% endif %}
+                        </div>
+                        <div class="history-card-title">
+                            <p class="eyebrow">ASSESSMENT · {{ assessment.created_at }}</p>
+                            <h2 class="{% if assessment.prediction == 1 %}risk-text-higher{% else %}risk-text-lower{% endif %}">
+                                {% if assessment.prediction == 1 %}Higher Risk Indicator{% else %}Lower Risk Indicator{% endif %}
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="history-facts">
+                        <div><span>Higher-risk probability</span><strong>{{ "%.1f"|format(assessment.probability * 100) }}%</strong></div>
+                        <div><span>Glucose</span><strong>{{ "%.1f"|format(assessment.glucose) }}</strong></div>
+                        <div><span>BMI</span><strong>{{ "%.1f"|format(assessment.bmi) }}</strong></div>
+                        <div><span>Age</span><strong>{{ "%.0f"|format(assessment.age) }}</strong></div>
+                    </div>
+                    <a class="nav-button history-detail-link" href="{{ url_for('assessment_detail', assessment_id=assessment.id) }}">View Details <span aria-hidden="true">→</span></a>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="card history-empty">
+                <span class="empty-icon" aria-hidden="true">◎</span>
+                <h2>No assessments yet. Start your first health assessment.</h2>
+                <p>Your completed assessments will appear here for your account only.</p>
+                <a class="nav-button nav-primary" href="{{ url_for('home') }}#form-heading">Start an Assessment</a>
+            </div>
+            {% endif %}
+        </section>
+
+        <footer class="page-footer">
+            <span class="footer-mark" aria-hidden="true">i</span>
+            <p>This tool is for educational purposes only and is not a medical diagnosis.</p>
+        </footer>
+    </main>
+</body>
+</html>

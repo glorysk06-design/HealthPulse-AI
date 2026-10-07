@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f8fb">
+    <title>HealthPulse AI | Health Risk &amp; Report Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="HealthPulse AI home">
+                <img class="brand-logo" src="{{ url_for('static', filename='healthpulse-logo.png.png') }}" alt="HealthPulse AI logo">
+                <span class="brand-copy">
+                    <span class="brand-name">HealthPulse <strong>AI</strong></span>
+                    <span class="brand-subtitle">Intelligent Health Risk &amp; Report Assistant</span>
+                </span>
+            </a>
+            <div class="topbar-meta">
+                <p class="welcome-name">Welcome, <strong>{{ user_name }}</strong></p>
+                <nav class="user-actions" aria-label="Account navigation">
+                    <a class="nav-button nav-primary" href="#form-heading">New Assessment</a>
+                    <a class="nav-button" href="{{ url_for('history') }}">Assessment History</a>
+                    <form method="post" action="{{ url_for('logout') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="nav-button nav-logout" type="submit">Logout</button>
+                    </form>
+                </nav>
+                <div class="user-badges" aria-label="Application attributes">
+                    <span>Machine Learning</span>
+                    <span>Explainable AI</span>
+                    <span>Educational Tool</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="eyebrow-line"></span> AI HEALTHCARE ANALYTICS</p>
+                <h1 id="hero-heading">Understand Your <span>Health Data</span></h1>
+                <p class="hero-note">
+                    Enter your health measurements to receive an educational machine-learning risk indicator, model insights, and an easy-to-understand health report.
+                </p>
+                <div class="hero-points">
+                    <span><span class="point-check" aria-hidden="true">✓</span> Evidence-informed insights</span>
+                    <span><span class="point-check" aria-hidden="true">✓</span> Clear, explainable results</span>
+                </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="visual-orbit orbit-outer"></div>
+                <div class="visual-orbit orbit-inner"></div>
+                <div class="visual-center">
+                    <span class="pulse-cross">+</span>
+                    <span class="pulse-line"><i></i></span>
+                </div>
+                <span class="visual-node node-top"></span>
+                <span class="visual-node node-side"></span>
+                <div class="visual-caption"><span class="status-dot"></span> HEALTH DATA, MADE CLEAR</div>
+            </div>
+        </section>
+
+        <section class="card form-card" aria-labelledby="form-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">PERSONAL HEALTH INPUT</p>
+                    <h2 id="form-heading">Enter Health Measurements</h2>
+                </div>
+                <span class="field-count">8 measurements</span>
+            </div>
+            <p class="intro">Provide the eight parameters used by the predictive model.</p>
+
+            <form method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-grid">
+                    {% for feature in feature_names %}
+                    <label for="{{ feature }}">
+                        <span class="field-label">
+                            {{ feature }}
+                            {% if feature == 'Glucose' %}<span class="field-unit">mg/dL</span>
+                            {% elif feature == 'BloodPressure' %}<span class="field-unit">mmHg</span>
+                            {% elif feature == 'SkinThickness' %}<span class="field-unit">mm</span>
+                            {% elif feature == 'Insulin' %}<span class="field-unit">μU/mL</span>
+                            {% elif feature == 'BMI' %}<span class="field-unit">kg/m²</span>
+                            {% elif feature == 'Age' %}<span class="field-unit">years</span>
+                            {% elif feature == 'Pregnancies' %}<span class="field-unit">count</span>
+                            {% elif feature == 'DiabetesPedigreeFunction' %}<span class="field-unit">score</span>
+                            {% endif %}
+                        </span>
+                        <input
+                            id="{{ feature }}"
+                            name="{{ feature }}"
+                            type="number"
+                            step="any"
+                            placeholder="{% if feature == 'Pregnancies' %}e.g. 2{% elif feature == 'Glucose' %}e.g. 120{% elif feature == 'BloodPressure' %}e.g. 70{% elif feature == 'SkinThickness' %}e.g. 25{% elif feature == 'Insulin' %}e.g. 80{% elif feature == 'BMI' %}e.g. 27.5{% elif feature == 'DiabetesPedigreeFunction' %}e.g. 0.4{% elif feature == 'Age' %}e.g. 35{% endif %}"
+                            value="{{ form_values.get(feature, '') }}"
+                            required
+                        >
+                    </label>
+                    {% endfor %}
+                </div>
+                <button type="submit">
+                    <span>Analyze Health</span>
+                    <span class="button-arrow" aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            {% if error %}
+            <p class="error" role="alert">{{ error }}</p>
+            {% endif %}
+        </section>
+
+        {% if result %}
+        <section class="result-card {% if result == 'Higher Risk Indicator' %}result-higher{% else %}result-lower{% endif %}" aria-live="polite">
+            <div class="result-heading">
+                <div class="result-icon" aria-hidden="true">{% if result == 'Higher Risk Indicator' %}!{% else %}✓{% endif %}</div>
+                <div class="result-copy">
+                    <p class="eyebrow">YOUR MODEL RESULT</p>
+                    <h2>Model Assessment</h2>
+                    <p class="risk-label">{{ result }}</p>
+                </div>
+            </div>
+            {% if probability is not none %}
+            <div class="probability-display">
+                <div class="probability-ring" style="--probability: {{ "%.1f"|format(probability * 100) }}%">
+                    <span>{{ "%.1f"|format(probability * 100) }}<small>%</small></span>
+                </div>
+                <p>Model probability for Higher Risk Indicator</p>
+            </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        {% if feature_importances %}
+        <section class="card importance-card" aria-labelledby="importance-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">MODEL TRANSPARENCY</p>
+                    <h2 id="importance-heading">Model Feature Importance</h2>
+                </div>
+                <span class="section-icon" aria-hidden="true">↗</span>
+            </div>
+            <p class="section-description">
+                Relative importance of input features in the Random Forest model.
+            </p>
+            <div class="importance-list">
+                {% for item in feature_importances %}
+                <div class="importance-row">
+                    <div class="importance-label">
+                        <span>{{ item.name }}</span>
+                        <span class="importance-value">{{ "%.4f"|format(item.importance) }}</span>
+                    </div>
+                    <div class="importance-track" aria-hidden="true">
+                        <div class="importance-bar" style="width: {{ "%.2f"|format(item.importance / feature_importance_max * 100) }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <p class="importance-note">
+                Feature importance shows how much each input contributed to the Random Forest model's decision process. It indicates model-level importance, not causation, and does not mean that a feature caused the predicted result.
+            </p>
+        </section>
+        {% endif %}
+
+        {% if report %}
+        <section class="card report-card" aria-labelledby="report-heading" aria-live="polite">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">PERSONALIZED INSIGHTS</p>
+                    <h2 id="report-heading">Your Educational Health Report</h2>
+                </div>
+                <span class="section-icon report-icon" aria-hidden="true">✳</span>
+            </div>
+
+            <div class="report-grid">
+                <section class="report-section">
+                    <h3>Risk Summary</h3>
+                    <p>{{ report.risk_summary }}</p>
+                </section>
+
+                <section class="report-section">
+                    <h3>Important Factors</h3>
+                    <p>The model considered the following values together. This list does not identify a cause:</p>
+                    <ul>
+                        {% for factor in report.important_factors %}
+                        <li>{{ factor }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+
+                <section class="report-section">
+                    <h3>General Health Guidance</h3>
+                    <p>{{ report.general_guidance }}</p>
+                </section>
+
+                <section class="report-section">
+                    <h3>Professional Recommendation</h3>
+                    <p>{{ report.professional_recommendation }}</p>
+                </section>
+            </div>
+
+            <section class="report-disclaimer">
+                <h3>Important Disclaimer</h3>
+                <p>{{ report.disclaimer }}</p>
+            </section>
+        </section>
+        {% endif %}
+
+        <footer class="page-footer">
+            <span class="footer-mark" aria-hidden="true">i</span>
+            <p>This tool is for educational purposes only and is not a medical diagnosis.</p>
+        </footer>
+    </main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f8fb">
+    <title>Sign In | HealthPulse AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="account-page">
+    <main class="page-shell">
+        <header class="account-topbar">
+            <a class="brand" href="{{ url_for('login') }}" aria-label="HealthPulse AI">
+                <img class="brand-logo" src="{{ url_for('static', filename='healthpulse-logo.png.png') }}" alt="HealthPulse AI logo">
+                <span class="brand-copy">
+                    <span class="brand-name">HealthPulse <strong>AI</strong></span>
+                    <span class="brand-subtitle">Intelligent Health Risk &amp; Report Assistant</span>
+                </span>
+            </a>
+            <span class="sdg-badge"><span class="sdg-mark" aria-hidden="true">3</span> SDG 3 <span class="sdg-divider">•</span> Good Health &amp; Well-being</span>
+        </header>
+
+        <section class="account-layout" aria-labelledby="login-heading">
+            <div class="account-intro">
+                <p class="eyebrow"><span class="eyebrow-line"></span> YOUR HEALTH INSIGHTS</p>
+                <h1>Welcome back.</h1>
+                <p>Sign in to continue to your private HealthPulse dashboard and assessment history.</p>
+                <div class="account-trust">
+                    <span class="point-check" aria-hidden="true">✓</span>
+                    Your health assessments are private to your account.
+                </div>
+            </div>
+            <div class="card account-card">
+                <p class="eyebrow">ACCOUNT ACCESS</p>
+                <h2 id="login-heading">Sign in to HealthPulse AI</h2>
+                <p class="account-hint">Enter your email and password to continue.</p>
+                {% if error %}
+                <p class="error" role="alert">{{ error }}</p>
+                {% endif %}
+                <form method="post" class="account-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="email">Email
+                        <input id="email" name="email" type="email" autocomplete="email" value="{{ request.form.get('email', '') }}" required>
+                    </label>
+                    <label for="password">Password
+                        <input id="password" name="password" type="password" autocomplete="current-password" required>
+                    </label>
+                    <button type="submit">Login <span class="button-arrow" aria-hidden="true">→</span></button>
+                </form>
+                <p class="account-switch">Don't have an account? <a href="{{ url_for('register') }}">Create Account</a></p>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            <span class="footer-mark" aria-hidden="true">i</span>
+            <p>This tool is for educational purposes only and is not a medical diagnosis.</p>
+        </footer>
+    </main>
+</body>
+</html>

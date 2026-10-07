@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="1280" viewBox="0 0 960 1280" role="img" aria-labelledby="title description">
+  <title id="title">HealthPulse AI user and prediction flow</title>
+  <desc id="description">A vertical flowchart from user input through the HealthPulse interface, Random Forest prediction, feature importance, and the AI Health Report Agent, ending with five report sections.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef8f5"/>
+      <stop offset="1" stop-color="#f5f7fb"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#126c68"/>
+      <stop offset="1" stop-color="#168b7c"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#183137" flood-opacity=".10"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#648681"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; }
+      .node { fill: #ffffff; stroke: #cbded9; stroke-width: 2; }
+      .primary { fill: #e8f5f2; stroke: #8fc8b9; }
+      .model { fill: #edf2fb; stroke: #b4c3e3; }
+      .agent { fill: #126c68; stroke: #126c68; }
+      .node-label { fill: #19383c; font-size: 23px; font-weight: 650; text-anchor: middle; }
+      .node-sub { fill: #567174; font-size: 17px; text-anchor: middle; }
+      .white-label { fill: #ffffff; font-size: 23px; font-weight: 700; text-anchor: middle; }
+      .white-sub { fill: #e2f3ef; font-size: 16px; text-anchor: middle; }
+      .arrow { fill: none; stroke: #648681; stroke-width: 3; marker-end: url(#arrow); }
+      .report-card { fill: #ffffff; stroke: #b8d9d0; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <rect width="960" height="1280" rx="30" fill="url(#background)"/>
+
+  <text x="480" y="58" fill="#126c68" font-size="31" font-weight="750" text-anchor="middle">HealthPulse AI</text>
+  <text x="480" y="88" fill="#526b70" font-size="18" text-anchor="middle">Intelligent Health Risk &amp; Report Assistant</text>
+
+  <g filter="url(#shadow)">
+    <rect class="node primary" x="240" y="120" width="480" height="66" rx="16"/>
+    <text class="node-label" x="480" y="161">User</text>
+
+    <rect class="node primary" x="240" y="222" width="480" height="66" rx="16"/>
+    <text class="node-label" x="480" y="263">HealthPulse Web Interface</text>
+
+    <rect class="node" x="240" y="324" width="480" height="66" rx="16"/>
+    <text class="node-label" x="480" y="365">8 Health Parameters</text>
+
+    <rect class="node model" x="240" y="426" width="480" height="66" rx="16"/>
+    <text class="node-label" x="480" y="467">Random Forest ML Model</text>
+
+    <rect class="node model" x="240" y="528" width="480" height="66" rx="16"/>
+    <text class="node-label" x="480" y="569">Risk Prediction + Probability</text>
+
+    <rect class="node model" x="240" y="630" width="480" height="66" rx="16"/>
+    <text class="node-label" x="480" y="671">Feature Importance</text>
+
+    <rect x="240" y="732" width="480" height="78" rx="16" fill="url(#header)" stroke="#126c68" stroke-width="2"/>
+    <text class="white-label" x="480" y="765">AI Health Report Agent</text>
+    <text class="white-sub" x="480" y="790">Creates a readable educational report</text>
+  </g>
+
+  <path class="arrow" d="M480 186V215"/>
+  <path class="arrow" d="M480 288V317"/>
+  <path class="arrow" d="M480 390V419"/>
+  <path class="arrow" d="M480 492V521"/>
+  <path class="arrow" d="M480 594V623"/>
+  <path class="arrow" d="M480 696V725"/>
+  <path class="arrow" d="M480 810V846"/>
+
+  <g filter="url(#shadow)">
+    <rect x="160" y="846" width="640" height="354" rx="20" fill="#f7fcfa" stroke="#a8d1c5" stroke-width="2"/>
+    <rect x="160" y="846" width="640" height="60" rx="20" fill="#dff1eb"/>
+    <path d="M160 886V906H800V886" fill="#dff1eb"/>
+    <text x="480" y="885" fill="#155f4b" font-size="22" font-weight="700" text-anchor="middle">Generated Health Report</text>
+
+    <rect class="report-card" x="210" y="926" width="540" height="42" rx="10"/>
+    <text x="480" y="954" fill="#29474b" font-size="18" font-weight="600" text-anchor="middle">Risk Summary</text>
+
+    <rect class="report-card" x="210" y="978" width="540" height="42" rx="10"/>
+    <text x="480" y="1006" fill="#29474b" font-size="18" font-weight="600" text-anchor="middle">Important Factors</text>
+
+    <rect class="report-card" x="210" y="1030" width="540" height="42" rx="10"/>
+    <text x="480" y="1058" fill="#29474b" font-size="18" font-weight="600" text-anchor="middle">General Guidance</text>
+
+    <rect class="report-card" x="210" y="1082" width="540" height="42" rx="10"/>
+    <text x="480" y="1110" fill="#29474b" font-size="18" font-weight="600" text-anchor="middle">Professional Recommendation</text>
+
+    <rect class="report-card" x="210" y="1134" width="540" height="42" rx="10"/>
+    <text x="480" y="1162" fill="#29474b" font-size="18" font-weight="600" text-anchor="middle">Disclaimer</text>
+  </g>
+
+  <text x="480" y="1238" fill="#667b7e" font-size="15" text-anchor="middle">Educational risk-indicator system — not a medical diagnosis</text>
+</svg>
